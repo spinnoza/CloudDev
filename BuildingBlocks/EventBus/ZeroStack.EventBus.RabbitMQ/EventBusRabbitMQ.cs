@@ -273,7 +273,7 @@ namespace ZeroStack.EventBus.RabbitMQ
                     {
                         if (_serviceProvider.GetService(subscription.HandlerType) is IDynamicIntegrationEventHandler handler)
                         {
-                            dynamic eventData = JsonSerializer.Deserialize<ExpandoObject>(message);
+                            dynamic? eventData = JsonSerializer.Deserialize<ExpandoObject>(message);
                             await handler.HandleAsync(eventData);
                         }
                     }
@@ -284,9 +284,9 @@ namespace ZeroStack.EventBus.RabbitMQ
                         if (handler is not null)
                         {
                             var eventType = _subsManager.GetEventTypeByName(eventName);
-                            object integrationEvent = JsonSerializer.Deserialize(message, eventType);
+                            object integrationEvent = JsonSerializer.Deserialize(message, eventType)!;
                             var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
-                            await (Task)concreteType.GetMethod("Handle")!.Invoke(handler, new object[] { integrationEvent! })!;
+                            await (Task)concreteType.GetMethod(nameof(IIntegrationEventHandler<IntegrationEvent>.HandleAsync))!.Invoke(handler, new object[] { integrationEvent! })!;
                         }
                     }
                 }

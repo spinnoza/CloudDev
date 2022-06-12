@@ -11,17 +11,17 @@ namespace ZeroStack.EventBus.Events
         public IntegrationEvent()
         {
             Id = Guid.NewGuid();
-            CreationDate = DateTimeOffset.Now;
+            CreationTime = DateTimeOffset.Now;
         }
 
         public IntegrationEvent(Guid id, DateTime createDate)
         {
             Id = id;
-            CreationDate = createDate;
+            CreationTime = createDate;
         }
 
         public Guid Id { get; set; }
 
-        public DateTimeOffset CreationDate { get; set; }
+        public DateTimeOffset CreationTime { get; set; }
     }
 }

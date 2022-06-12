@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateways", "ApiGateways", "{93FEB3CA-C1BD-49E0-86E4-A98160160A33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.Ocelot", "ApiGateways\ZeroStack.Ocelot\ZeroStack.Ocelot.csproj", "{BD131749-2B54-4A83-A11D-044746E37FC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.Ocelot", "ApiGateways\ZeroStack.Ocelot\ZeroStack.Ocelot.csproj", "{BD131749-2B54-4A83-A11D-044746E37FC9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{B8FC0398-C49A-420C-9760-94E5DF41F318}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{A9373239-E68C-4024-94CC-0C4A92439C63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.EventBus", "BuildingBlocks\EventBus\ZeroStack.EventBus\ZeroStack.EventBus.csproj", "{1BD07779-88CC-460D-9260-EFE1D2A8B5F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.EventBus", "BuildingBlocks\EventBus\ZeroStack.EventBus\ZeroStack.EventBus.csproj", "{1BD07779-88CC-460D-9260-EFE1D2A8B5F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.EventBus.RabbitMQ", "BuildingBlocks\EventBus\ZeroStack.EventBus.RabbitMQ\ZeroStack.EventBus.RabbitMQ.csproj", "{A2ABB72A-8DEF-4A9D-9BC3-3976B9B01E41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.EventBus.RabbitMQ", "BuildingBlocks\EventBus\ZeroStack.EventBus.RabbitMQ\ZeroStack.EventBus.RabbitMQ.csproj", "{A2ABB72A-8DEF-4A9D-9BC3-3976B9B01E41}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{9C222A5C-0A43-4287-8A2C-B9F3DC012F9C}"
 EndProject
@@ -21,31 +21,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeviceCenter", "DeviceCente
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{BE0172B7-212C-4116-8E9E-1A9C8C938730}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.DeviceCenter.Domain", "Services\DeviceCenter\ZeroStack.DeviceCenter.Domain\ZeroStack.DeviceCenter.Domain.csproj", "{A9530499-C7AC-4E9F-87AD-16E4E787A129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.DeviceCenter.Domain", "Services\DeviceCenter\ZeroStack.DeviceCenter.Domain\ZeroStack.DeviceCenter.Domain.csproj", "{A9530499-C7AC-4E9F-87AD-16E4E787A129}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.DeviceCenter.Application", "Services\DeviceCenter\ZeroStack.DeviceCenter.Application\ZeroStack.DeviceCenter.Application.csproj", "{071691F2-557B-4CB8-974B-0E6F256CEDD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.DeviceCenter.Application", "Services\DeviceCenter\ZeroStack.DeviceCenter.Application\ZeroStack.DeviceCenter.Application.csproj", "{071691F2-557B-4CB8-974B-0E6F256CEDD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.DeviceCenter.Infrastructure", "Services\DeviceCenter\ZeroStack.DeviceCenter.Infrastructure\ZeroStack.DeviceCenter.Infrastructure.csproj", "{92BAD6A9-7B55-4845-B77B-1A8612CD2F15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.DeviceCenter.Infrastructure", "Services\DeviceCenter\ZeroStack.DeviceCenter.Infrastructure\ZeroStack.DeviceCenter.Infrastructure.csproj", "{92BAD6A9-7B55-4845-B77B-1A8612CD2F15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.DeviceCenter.API", "Services\DeviceCenter\ZeroStack.DeviceCenter.API\ZeroStack.DeviceCenter.API.csproj", "{F674247B-FBF3-4AC8-A87B-441ABEA32EDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.DeviceCenter.API", "Services\DeviceCenter\ZeroStack.DeviceCenter.API\ZeroStack.DeviceCenter.API.csproj", "{F674247B-FBF3-4AC8-A87B-441ABEA32EDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.IdentityServer.API", "Services\Identity\ZeroStack.IdentityServer.API\ZeroStack.IdentityServer.API.csproj", "{5EB3AEEB-7723-4D2D-BB61-C4D534E3CBAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.IdentityServer.API", "Services\Identity\ZeroStack.IdentityServer.API\ZeroStack.IdentityServer.API.csproj", "{5EB3AEEB-7723-4D2D-BB61-C4D534E3CBAA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{6B53C7AB-DC0C-45B3-A12C-9C31888EA1DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.DeviceCenter.Web", "Web\ZeroStack.DeviceCenter.Web\ZeroStack.DeviceCenter.Web.csproj", "{0929CDFF-D0E8-4D6F-A0B7-83C5BAC8CDC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.DeviceCenter.Web", "Web\ZeroStack.DeviceCenter.Web\ZeroStack.DeviceCenter.Web.csproj", "{0929CDFF-D0E8-4D6F-A0B7-83C5BAC8CDC7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mobile", "Mobile", "{044E2200-BFEC-4CE4-8326-E43D72EFE722}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.DeviceCenter.WeChat", "Mobile\ZeroStack.DeviceCenter.WeChat\ZeroStack.DeviceCenter.WeChat.csproj", "{2E10DEBF-883A-4814-B073-0D5AE7229F0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.DeviceCenter.WeChat", "Mobile\ZeroStack.DeviceCenter.WeChat\ZeroStack.DeviceCenter.WeChat.csproj", "{2E10DEBF-883A-4814-B073-0D5AE7229F0F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1738D6D7-1268-405E-9C87-8D798A27BA4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.UnitTests", "Tests\ZeroStack.UnitTests\ZeroStack.UnitTests.csproj", "{C9BE337C-34F1-4AF8-A0D7-B569CFE7D54A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.UnitTests", "Tests\ZeroStack.UnitTests\ZeroStack.UnitTests.csproj", "{C9BE337C-34F1-4AF8-A0D7-B569CFE7D54A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.IntegrationTests", "Tests\ZeroStack.IntegrationTests\ZeroStack.IntegrationTests.csproj", "{5E160B00-F181-4D7E-8D7E-22AA9062BE84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.IntegrationTests", "Tests\ZeroStack.IntegrationTests\ZeroStack.IntegrationTests.csproj", "{5E160B00-F181-4D7E-8D7E-22AA9062BE84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.FunctionalTests", "Tests\ZeroStack.FunctionalTests\ZeroStack.FunctionalTests.csproj", "{19CC3C6D-1E04-4647-8E5D-0D1E810B176B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZeroStack.FunctionalTests", "Tests\ZeroStack.FunctionalTests\ZeroStack.FunctionalTests.csproj", "{19CC3C6D-1E04-4647-8E5D-0D1E810B176B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZeroStack.EventBus.MomeryQueue", "BuildingBlocks\EventBus\ZeroStack.EventBus.MomeryQueue\ZeroStack.EventBus.MomeryQueue\ZeroStack.EventBus.MomeryQueue.csproj", "{6EDF5E4B-2C24-49AA-9430-B787A5E0A99F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{19CC3C6D-1E04-4647-8E5D-0D1E810B176B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19CC3C6D-1E04-4647-8E5D-0D1E810B176B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19CC3C6D-1E04-4647-8E5D-0D1E810B176B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EDF5E4B-2C24-49AA-9430-B787A5E0A99F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EDF5E4B-2C24-49AA-9430-B787A5E0A99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EDF5E4B-2C24-49AA-9430-B787A5E0A99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EDF5E4B-2C24-49AA-9430-B787A5E0A99F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{C9BE337C-34F1-4AF8-A0D7-B569CFE7D54A} = {1738D6D7-1268-405E-9C87-8D798A27BA4C}
 		{5E160B00-F181-4D7E-8D7E-22AA9062BE84} = {1738D6D7-1268-405E-9C87-8D798A27BA4C}
 		{19CC3C6D-1E04-4647-8E5D-0D1E810B176B} = {1738D6D7-1268-405E-9C87-8D798A27BA4C}
+		{6EDF5E4B-2C24-49AA-9430-B787A5E0A99F} = {A9373239-E68C-4024-94CC-0C4A92439C63}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8C5C0385-1246-4600-92B8-5310840CA03B}
