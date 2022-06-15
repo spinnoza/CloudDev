@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ZeroStack.DeviceCenter.Domain.Entities;
+using ZeroStack.DeviceCenter.Domain.Specifications;
 using ZeroStack.DeviceCenter.Domain.UnitOfWork;
 
 namespace ZeroStack.DeviceCenter.Domain.Repositories
@@ -34,6 +35,16 @@ namespace ZeroStack.DeviceCenter.Domain.Repositories
         Task<TEntity> GetAsync([NotNull] Expression<Func<TEntity, bool>> predicate, bool includeDetails = true, CancellationToken cancellationToken = default);
 
         IQueryable<TEntity> Query { get; }
+
+        Task<List<TEntity>> GetListAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
+
+        Task<List<TResult>> GetListAsync<TResult>(ISpecification<TEntity, TResult> specification, CancellationToken cancellationToken = default);
+
+        Task<long> GetCountAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
+
+        Task<TEntity> GetAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default);
+
+        Task<TResult> GetAsync<TResult>(ISpecification<TEntity, TResult> specification, CancellationToken cancellationToken = default);
 
         IUnitOfWork UnitOfWork { get; }
 
