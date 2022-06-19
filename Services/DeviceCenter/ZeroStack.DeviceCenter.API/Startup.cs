@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using ZeroStack.DeviceCenter.Domain;
 using ZeroStack.DeviceCenter.Infrastructure;
 using ZeroStack.DeviceCenter.Domain.Repositories;
+using ZeroStack.DeviceCenter.API.Extensions.Tenants;
 
 namespace ZeroStack.DeviceCenter.API
 {
@@ -31,6 +32,8 @@ namespace ZeroStack.DeviceCenter.API
         {
             services.AddDomainLayer().AddInfrastructureLayer(Configuration);
 
+            services.AddTenantMiddleware();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -41,6 +44,8 @@ namespace ZeroStack.DeviceCenter.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseTenantMiddleware();
+
             //用IDataSeedProvider 初始化数据
             using (IServiceScope serviceScope = app.ApplicationServices.CreateScope())
             {
