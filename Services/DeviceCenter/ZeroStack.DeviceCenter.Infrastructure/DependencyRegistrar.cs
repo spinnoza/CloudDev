@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using ZeroStack.DeviceCenter.Infrastructure.Constants;
 using System.Reflection;
 using ZeroStack.DeviceCenter.Domain.Repositories;
-using MySql.EntityFrameworkCore.Extensions;
+using ZeroStack.DeviceCenter.Domain.Aggregates.ProductAggregate;
+using ZeroStack.DeviceCenter.Infrastructure.Repositories;
 
 namespace ZeroStack.DeviceCenter.Infrastructure
 {
@@ -21,14 +22,15 @@ namespace ZeroStack.DeviceCenter.Infrastructure
     {
         public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddEntityFrameworkMySQL();
+            services.AddEntityFrameworkMySql();
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 25));
 
             services.AddDbContextPool<DeviceCenterDbContext>((serviceProvider, optionsBuilder) =>
             {
-                optionsBuilder.UseMySQL(configuration.GetConnectionString(DbConstants.DefaultConnectionStringName), sqlOptions =>
+                optionsBuilder.UseMySql( configuration.GetConnectionString(DbConstants.DefaultConnectionStringName), serverVersion, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
-                    //sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                    sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                 });
 
                 //设置 Entityframework的服务提供者(容器),如果未指定任何服务提供程序，EF 将创建和管理服务提供程序。
@@ -38,10 +40,10 @@ namespace ZeroStack.DeviceCenter.Infrastructure
             //为当前容器注入DbContextFactory,DbContextFactory可以用来解析DbContext,而不是由容器提供
             services.AddPooledDbContextFactory<DeviceCenterDbContext>((serviceProvider, optionsBuilder) =>
             {
-                optionsBuilder.UseMySQL(configuration.GetConnectionString(DbConstants.DefaultConnectionStringName), sqlOptions =>
+                optionsBuilder.UseMySql(configuration.GetConnectionString(DbConstants.DefaultConnectionStringName), serverVersion, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
-                    //sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+                    sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                 });
 
                 optionsBuilder.UseInternalServiceProvider(serviceProvider);
@@ -49,7 +51,7 @@ namespace ZeroStack.DeviceCenter.Infrastructure
 
              services.AddTransient(typeof(IRepository<>), typeof(DeviceCenterEfCoreRepository<>));
              services.AddTransient(typeof(IRepository<,>), typeof(DeviceCenterEfCoreRepository<,>));
-
+            services.AddTransient<IProductRepository, ProductRepository>();
             return services;
         }
     }

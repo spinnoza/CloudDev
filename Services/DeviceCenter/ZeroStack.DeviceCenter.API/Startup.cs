@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ZeroStack.DeviceCenter.Domain;
 using ZeroStack.DeviceCenter.Infrastructure;
+using ZeroStack.DeviceCenter.Domain.Repositories;
 
 namespace ZeroStack.DeviceCenter.API
 {
@@ -28,8 +29,7 @@ namespace ZeroStack.DeviceCenter.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDomainLayer();
-            services.AddInfrastructureLayer(Configuration);
+            services.AddDomainLayer().AddInfrastructureLayer(Configuration);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -41,6 +41,18 @@ namespace ZeroStack.DeviceCenter.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //用IDataSeedProvider 初始化数据
+            using (IServiceScope serviceScope = app.ApplicationServices.CreateScope())
+            {
+                var dataSeedProviders = serviceScope.ServiceProvider.GetServices<IDataSeedProvider>();
+
+                foreach (IDataSeedProvider dataSeedProvider in dataSeedProviders)
+                {
+                    dataSeedProvider.SeedAsync(serviceScope.ServiceProvider).Wait();
+                }
+            }
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

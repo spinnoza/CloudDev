@@ -9,7 +9,7 @@ using ZeroStack.DeviceCenter.Infrastructure.EntityFrameworks;
 namespace ZeroStack.DeviceCenter.Infrastructure.Migrations
 {
     [DbContext(typeof(DeviceCenterDbContext))]
-    [Migration("20220618151240_InitialCreate")]
+    [Migration("20220619000906_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,7 +17,7 @@ namespace ZeroStack.DeviceCenter.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.17");
+                .HasAnnotation("ProductVersion", "5.0.10");
 
             modelBuilder.Entity("ZeroStack.DeviceCenter.Domain.Aggregates.ProductAggregate.Device", b =>
                 {
@@ -27,7 +27,7 @@ namespace ZeroStack.DeviceCenter.Infrastructure.Migrations
 
                     b.Property<string>("Coordinate")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -37,9 +37,8 @@ namespace ZeroStack.DeviceCenter.Infrastructure.Migrations
                     b.Property<bool>("Online")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<byte[]>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("varbinary(16)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("SerialNo")
                         .IsRequired()
@@ -76,9 +75,9 @@ namespace ZeroStack.DeviceCenter.Infrastructure.Migrations
 
             modelBuilder.Entity("ZeroStack.DeviceCenter.Domain.Aggregates.ProductAggregate.Product", b =>
                 {
-                    b.Property<byte[]>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varbinary(16)");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -104,7 +103,7 @@ namespace ZeroStack.DeviceCenter.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("CreationTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -123,7 +122,7 @@ namespace ZeroStack.DeviceCenter.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("CreationTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -167,23 +166,23 @@ namespace ZeroStack.DeviceCenter.Infrastructure.Migrations
 
                             b1.Property<string>("City")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("State")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("Street")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("longtext");
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("longtext");
 
                             b1.HasKey("DeviceId");
 
