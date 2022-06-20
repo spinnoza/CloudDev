@@ -4,5 +4,13 @@
 	  <TargetFramework>net5.0</TargetFramework>
 	  <Nullable>enable</Nullable>
   </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ZeroStack.DeviceCenter.Domain\ZeroStack.DeviceCenter.Domain.csproj" />
+  </ItemGroup>
 
 </Project>

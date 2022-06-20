@@ -15,6 +15,7 @@ using ZeroStack.DeviceCenter.Domain;
 using ZeroStack.DeviceCenter.Infrastructure;
 using ZeroStack.DeviceCenter.Domain.Repositories;
 using ZeroStack.DeviceCenter.API.Extensions.Tenants;
+using ZeroStack.DeviceCenter.Application;
 
 namespace ZeroStack.DeviceCenter.API
 {
@@ -30,7 +31,7 @@ namespace ZeroStack.DeviceCenter.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDomainLayer().AddInfrastructureLayer(Configuration);
+            services.AddDomainLayer().AddInfrastructureLayer(Configuration).AddApplicationLayer(); ;
 
             services.AddTenantMiddleware();
 

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ZeroStack.DeviceCenter.Application\ZeroStack.DeviceCenter.Application.csproj" />
     <ProjectReference Include="..\ZeroStack.DeviceCenter.Domain\ZeroStack.DeviceCenter.Domain.csproj" />
     <ProjectReference Include="..\ZeroStack.DeviceCenter.Infrastructure\ZeroStack.DeviceCenter.Infrastructure.csproj" />
   </ItemGroup>
