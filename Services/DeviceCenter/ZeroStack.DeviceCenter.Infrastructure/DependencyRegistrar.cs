@@ -1,16 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZeroStack.DeviceCenter.Infrastructure.EntityFrameworks;
-using Microsoft.EntityFrameworkCore;
-using ZeroStack.DeviceCenter.Infrastructure.Constants;
 using System.Reflection;
-using ZeroStack.DeviceCenter.Domain.Repositories;
 using ZeroStack.DeviceCenter.Domain.Aggregates.ProductAggregate;
+using ZeroStack.DeviceCenter.Domain.Repositories;
+using ZeroStack.DeviceCenter.Infrastructure.Constants;
+using ZeroStack.DeviceCenter.Infrastructure.EntityFrameworks;
 using ZeroStack.DeviceCenter.Infrastructure.Repositories;
 
 namespace ZeroStack.DeviceCenter.Infrastructure
@@ -27,7 +23,7 @@ namespace ZeroStack.DeviceCenter.Infrastructure
 
             services.AddDbContextPool<DeviceCenterDbContext>((serviceProvider, optionsBuilder) =>
             {
-                optionsBuilder.UseMySql( configuration.GetConnectionString(DbConstants.DefaultConnectionStringName), serverVersion, sqlOptions =>
+                optionsBuilder.UseMySql(configuration.GetConnectionString(DbConstants.DefaultConnectionStringName), serverVersion, sqlOptions =>
                 {
                     sqlOptions.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
                     sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
@@ -49,8 +45,8 @@ namespace ZeroStack.DeviceCenter.Infrastructure
                 optionsBuilder.UseInternalServiceProvider(serviceProvider);
             });
 
-             services.AddTransient(typeof(IRepository<>), typeof(DeviceCenterEfCoreRepository<>));
-             services.AddTransient(typeof(IRepository<,>), typeof(DeviceCenterEfCoreRepository<,>));
+            services.AddTransient(typeof(IRepository<>), typeof(DeviceCenterEfCoreRepository<>));
+            services.AddTransient(typeof(IRepository<,>), typeof(DeviceCenterEfCoreRepository<,>));
             services.AddTransient<IProductRepository, ProductRepository>();
             return services;
         }

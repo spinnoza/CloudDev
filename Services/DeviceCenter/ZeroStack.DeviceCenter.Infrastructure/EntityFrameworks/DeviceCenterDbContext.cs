@@ -1,17 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using ZeroStack.DeviceCenter.Domain.Aggregates.ProjectAggregate;
-using ZeroStack.DeviceCenter.Domain.UnitOfWork;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Metadata;
+using ZeroStack.DeviceCenter.Domain.Aggregates.TenantAggregate;
 using ZeroStack.DeviceCenter.Domain.Entities;
-using System.Linq;
-using ZeroStack.DeviceCenter.Infrastructure.EntityConfigurations.Tenants;
-using MediatR;
+using ZeroStack.DeviceCenter.Domain.UnitOfWork;
 
 namespace ZeroStack.DeviceCenter.Infrastructure.EntityFrameworks
 {

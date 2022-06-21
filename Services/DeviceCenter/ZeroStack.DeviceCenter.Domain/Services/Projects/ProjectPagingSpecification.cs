@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZeroStack.DeviceCenter.Domain.Aggregates.ProjectAggregate;
 using ZeroStack.DeviceCenter.Domain.Specifications;
 

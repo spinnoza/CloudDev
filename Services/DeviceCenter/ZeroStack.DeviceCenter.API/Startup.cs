@@ -1,21 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ZeroStack.DeviceCenter.Domain;
-using ZeroStack.DeviceCenter.Infrastructure;
-using ZeroStack.DeviceCenter.Domain.Repositories;
 using ZeroStack.DeviceCenter.API.Extensions.Tenants;
 using ZeroStack.DeviceCenter.Application;
+using ZeroStack.DeviceCenter.Domain;
+using ZeroStack.DeviceCenter.Domain.Repositories;
+using ZeroStack.DeviceCenter.Infrastructure;
 
 namespace ZeroStack.DeviceCenter.API
 {

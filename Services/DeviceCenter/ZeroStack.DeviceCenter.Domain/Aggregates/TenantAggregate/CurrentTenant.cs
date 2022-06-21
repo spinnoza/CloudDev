@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZeroStack.DeviceCenter.Infrastructure.EntityConfigurations.Tenants;
 
-namespace ZeroStack.DeviceCenter.Infrastructure.EntityConfigurations.Tenants
+
+namespace ZeroStack.DeviceCenter.Domain.Aggregates.TenantAggregate
 {
     public class CurrentTenant : ICurrentTenant
     {

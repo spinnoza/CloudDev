@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZeroStack.DeviceCenter.API.Constants;
-using ZeroStack.DeviceCenter.Infrastructure.EntityConfigurations.Tenants;
+using ZeroStack.DeviceCenter.Domain.Aggregates.TenantAggregate;
 
 namespace ZeroStack.DeviceCenter.API.Extensions.Tenants
 {
