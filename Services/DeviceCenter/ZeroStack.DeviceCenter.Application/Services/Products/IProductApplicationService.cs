@@ -2,19 +2,13 @@
 using System.Threading.Tasks;
 using ZeroStack.DeviceCenter.Application.Models.Generics;
 using ZeroStack.DeviceCenter.Application.Models.Products;
+using ZeroStack.DeviceCenter.Application.Services.Generics;
+using ZeroStack.DeviceCenter.Domain.Aggregates.ProductAggregate;
 
 namespace ZeroStack.DeviceCenter.Application.Services.Products
 {
-    public interface IProductApplicationService
+    public interface IProductApplicationService : ICrudApplicationService<Guid, ProductGetResponseModel, PagedRequestModel, ProductGetResponseModel, ProductCreateOrUpdateRequestModel, ProductCreateOrUpdateRequestModel>
     {
-        Task<ProductGetResponseModel> CreateAsync(ProductCreateOrUpdateRequestModel requestModel);
-
-        Task DeleteAsync(Guid id);
-
-        Task<ProductGetResponseModel> UpdateAsync(ProductCreateOrUpdateRequestModel requestModel);
-
-        Task<ProductGetResponseModel> GetAsync(Guid id);
-
-        Task<PagedResponseModel<ProductGetResponseModel>> GetListAsync(PagedRequestModel requestModel);
+        Task<Product> GetByName(string productName);
     }
 }
