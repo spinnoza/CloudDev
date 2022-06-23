@@ -1,9 +1,11 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using ZeroStack.DeviceCenter.API.Extensions.Tenants;
 using ZeroStack.DeviceCenter.Application;
 using ZeroStack.DeviceCenter.Domain;
@@ -24,11 +26,13 @@ namespace ZeroStack.DeviceCenter.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDomainLayer().AddInfrastructureLayer(Configuration).AddApplicationLayer(); ;
+            services.AddDomainLayer().AddInfrastructureLayer(Configuration).AddApplicationLayer(); 
 
             services.AddTenantMiddleware();
 
-            services.AddControllers();
+            services.AddControllers()
+                //添加FluentValidation模型验证
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies())); 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ZeroStack.DeviceCenter.API", Version = "v1" });
