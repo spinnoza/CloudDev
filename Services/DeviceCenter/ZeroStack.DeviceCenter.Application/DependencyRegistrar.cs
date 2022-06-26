@@ -19,6 +19,10 @@ namespace ZeroStack.DeviceCenter.Application
             services.AddDomainEvents();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddApplicationServices();
+
+            //替换FluentValidation的模型验证多语言管理器为自己的
+            ValidatorOptions.Global.LanguageManager = new Extensions.Validators.CustomLanguageManager();
+
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             return services;
         }

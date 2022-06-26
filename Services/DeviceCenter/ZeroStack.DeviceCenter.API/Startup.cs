@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Localization;
 using Microsoft.OpenApi.Models;
 using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using ZeroStack.DeviceCenter.API.Extensions.Tenants;
 using ZeroStack.DeviceCenter.Application;
@@ -59,6 +62,42 @@ namespace ZeroStack.DeviceCenter.API
 
 
             app.UseTenantMiddleware();
+
+            #region 针对FluentValidation,针对 Display 和 DisplayName 特性做多语言处理
+            IStringLocalizerFactory? localizerFactory = app.ApplicationServices.GetService<IStringLocalizerFactory>();
+
+            FluentValidation.ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, lambdaExpression) =>
+            {
+                string? displayName = string.Empty;
+
+                DisplayAttribute? displayColumnAttribute = memberInfo.GetCustomAttributes(true).OfType<DisplayAttribute>().FirstOrDefault();
+
+                if (displayColumnAttribute is not null)
+                {
+                    displayName = displayColumnAttribute.Name;
+                }
+
+                DisplayNameAttribute? displayNameAttribute = memberInfo.GetCustomAttributes(true).OfType<DisplayNameAttribute>().FirstOrDefault();
+
+                if (displayNameAttribute is not null)
+                {
+                    displayName = displayNameAttribute.DisplayName;
+                }
+
+                if (!string.IsNullOrWhiteSpace(displayName) && localizerFactory is not null)
+                {
+                    return localizerFactory.Create(type)[displayName];
+                }
+
+                if (!string.IsNullOrWhiteSpace(displayName))
+                {
+                    return displayName;
+                }
+
+                return memberInfo.Name;
+            };
+            #endregion
+
 
             //用IDataSeedProvider 初始化数据
             using (IServiceScope serviceScope = app.ApplicationServices.CreateScope())
