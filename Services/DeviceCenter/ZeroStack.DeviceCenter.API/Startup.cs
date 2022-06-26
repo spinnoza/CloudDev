@@ -24,8 +24,10 @@ namespace ZeroStack.DeviceCenter.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ZeroStack.DeviceCenter.API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Device Center API", Version = "v1" });
             });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,7 +39,12 @@ namespace ZeroStack.DeviceCenter.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ZeroStack.DeviceCenter.API v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Device Center API v1");
+                    c.DocumentTitle = "Device Center API Document";
+                    c.IndexStream = () => GetType().Assembly.GetManifestResourceStream($"{GetType().Assembly.GetName().Name}.Infrastructure.Swagger.Index.html");
+                });
             }
 
             app.UseHttpsRedirection();
