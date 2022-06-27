@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
+using ZeroStack.DeviceCenter.Domain.Aggregates.PermissionAggregate;
 using ZeroStack.DeviceCenter.Domain.Aggregates.ProductAggregate;
 using ZeroStack.DeviceCenter.Domain.Repositories;
 using ZeroStack.DeviceCenter.Infrastructure.Constants;
@@ -48,6 +49,7 @@ namespace ZeroStack.DeviceCenter.Infrastructure
             services.AddTransient(typeof(IRepository<>), typeof(DeviceCenterEfCoreRepository<>));
             services.AddTransient(typeof(IRepository<,>), typeof(DeviceCenterEfCoreRepository<,>));
             services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IPermissionGrantRepository, PermissionGrantRepository>();
             return services;
         }
     }

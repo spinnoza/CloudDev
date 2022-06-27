@@ -48,8 +48,15 @@ namespace ZeroStack.DeviceCenter.Application
 
         private static IServiceCollection AddAuthorization(this IServiceCollection services)
         {
+
+            services.AddDistributedMemoryCache();
+            services.AddTransient<IPermissionStore, PermissionStore>();
+
             services.AddSingleton<IPermissionDefinitionProvider, CustomPermissionDefinitionProvider>();
             services.AddSingleton<IPermissionDefinitionManager, PermissionDefinitionManager>();
+
+            services.AddSingleton<IPermissionValueProvider, UserPermissionValueProvider>();
+            services.AddSingleton<IPermissionValueProvider, RolePermissionValueProvider>();
 
             return services;
         }
