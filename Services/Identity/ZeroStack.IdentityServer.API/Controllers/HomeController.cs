@@ -1,33 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+﻿using IdentityServer4.Models;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
 using ZeroStack.IdentityServer.API.Models;
 
 namespace ZeroStack.IdentityServer.API.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IIdentityServerInteractionService _interactionService;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IWebHostEnvironment _environment;
+
+        public HomeController(IIdentityServerInteractionService interactionService, IWebHostEnvironment environment)
         {
-            _logger = logger;
+            _interactionService = interactionService;
+            _environment = environment;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Error(string errorId)
         {
-            return View();
-        }
+            ErrorViewModel errorViewModel = new();
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            // retrieve error details from identityserver
+            ErrorMessage errorMessage = await _interactionService.GetErrorContextAsync(errorId);
+
+            if (errorMessage is not null)
+            {
+                errorViewModel.Error = errorMessage;
+
+                if (!_environment.IsDevelopment())
+                {
+                    // only show in development
+                    errorMessage.ErrorDescription = null;
+                }
+            }
+
+            return View("Error", errorViewModel);
         }
     }
 }

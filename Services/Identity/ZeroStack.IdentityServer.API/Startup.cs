@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Linq;
 using System.Reflection;
 using ZeroStack.IdentityServer.API.Models;
 
@@ -23,7 +24,12 @@ namespace ZeroStack.IdentityServer.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true)
+                .AddViewLocalization()
+                .AddDataAnnotationsLocalization();
+
+            //services.AddControllersWithViews();
 
 
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 25));
@@ -74,6 +80,15 @@ namespace ZeroStack.IdentityServer.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            string[] supportedCultures = new[] { "zh-CN", "en-US" };
+            RequestLocalizationOptions localizationOptions = new()
+            {
+                ApplyCurrentCultureToResponseHeaders = false
+            };
+            localizationOptions.SetDefaultCulture(supportedCultures.First()).AddSupportedCultures(supportedCultures).AddSupportedUICultures(supportedCultures);
+            app.UseRequestLocalization(localizationOptions);
+
             SampleDataSeed.SeedAsync(app).Wait();
 
             if (env.IsDevelopment())
