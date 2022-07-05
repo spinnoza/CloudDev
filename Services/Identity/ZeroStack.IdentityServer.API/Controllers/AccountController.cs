@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ZeroStack.IdentityServer.API.Models;
 using ZeroStack.IdentityServer.API.Models.AccountViewModels;
+using ZeroStack.IdentityServer.API.Services;
 
 namespace ZeroStack.IdentityServer.API.Controllers
 {
@@ -22,7 +24,10 @@ namespace ZeroStack.IdentityServer.API.Controllers
         private readonly IIdentityServerInteractionService _interactionService;
         private readonly IStringLocalizerFactory _localizerFactory;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILoggerFactory loggerFactory, IIdentityServerInteractionService interactionService, ApplicationDbContext dbContext, IStringLocalizerFactory localizerFactory)
+        private readonly IDistributedCache _distributedCache;
+        private readonly ISmsSender _smsSender;
+
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, ILoggerFactory loggerFactory, IIdentityServerInteractionService interactionService, ApplicationDbContext dbContext, IStringLocalizerFactory localizerFactory, IDistributedCache distributedCache, ISmsSender smsSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -30,6 +35,8 @@ namespace ZeroStack.IdentityServer.API.Controllers
             _interactionService = interactionService;
             _dbContext = dbContext;
             _localizerFactory = localizerFactory;
+            _distributedCache = distributedCache;
+            _smsSender = smsSender;
         }
 
         [HttpGet]
@@ -103,21 +110,132 @@ namespace ZeroStack.IdentityServer.API.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register(string? returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string? returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                if (_dbContext.Users.Any(u => u.UserName == model.UserName || u.PhoneNumber == model.PhoneNumber))
+                {
+                    ModelState.AddModelError(string.Empty, "User name or phone number is already in use.");
+                    return View(model);
+                }
+
+                if (string.IsNullOrWhiteSpace(model.ConfirmedCode) || await _distributedCache.GetStringAsync(model.PhoneNumber) != model.ConfirmedCode)
+                {
+                    ModelState.AddModelError(nameof(model.ConfirmedCode), "Invalid confirmed code.");
+                    return View(model);
+                }
+
+                var user = new ApplicationUser { UserName = model.UserName, PhoneNumber = model.PhoneNumber };
+                var result = await _userManager.CreateAsync(user, model.Password);
+
+                var token = await _userManager.GenerateChangePhoneNumberTokenAsync(user, user.PhoneNumber);
+                await _userManager.ChangePhoneNumberAsync(user, user.PhoneNumber, token);
+
+                // Get the information about the user from the external login provider
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+
+                if (result.Succeeded)
+                {
+                    result = await _userManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        _logger.LogInformation(6, "User created an account using {Name} provider.", info.LoginProvider);
+
+                        // Update any authentication tokens as well
+                        await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+
+                        return RedirectToLocal(returnUrl);
+                    }
+                }
+
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> SendCode([System.ComponentModel.DataAnnotations.Phone] string phoneNumber)
         {
-            if (phoneNumber is null)
+            if (!ModelState.IsValid)
             {
-                throw new ArgumentNullException(nameof(phoneNumber));
+                return BadRequest();
             }
 
-            return await Task.FromResult(new OkResult());
+            // Generate the token and send it
+
+            string code = _distributedCache.GetString(phoneNumber);
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                Random random = new((int)DateTime.Now.Ticks);
+                code = random.Next(100000, 999999).ToString();
+            }
+
+            await _distributedCache.SetStringAsync(phoneNumber, code, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30)
+            });
+
+            await _smsSender.SendSmsAsync(phoneNumber, code);
+
+            return Ok();
         }
 
         private IActionResult RedirectToLocal(string? returnUrl)
         {
             return Url.IsLocalUrl(returnUrl) ? Redirect(returnUrl) : RedirectToAction(nameof(HomeController.Index), "Home");
         }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        [AcceptVerbs("GET", "POST"), AllowAnonymous]
+        public IActionResult VerifyPhoneNumber(string phoneNumber)
+        {
+            var _localizer = _localizerFactory.Create(typeof(RegisterViewModel));
+
+            if (_dbContext.Users.Any(u => u.PhoneNumber == phoneNumber))
+            {
+                return Json(_localizer["Phone number is already in use."].Value);
+            }
+
+            return Json(true);
+        }
+
+        [AcceptVerbs("GET", "POST"), AllowAnonymous]
+        public IActionResult VerifyUserName(string userName)
+        {
+            var _localizer = _localizerFactory.Create(typeof(RegisterViewModel));
+
+            if (_dbContext.Users.Any(u => u.UserName == userName))
+            {
+                return Json(_localizer["User name is already in use."].Value);
+            }
+
+            return Json(true);
+        }
+
     }
 }
