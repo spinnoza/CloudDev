@@ -58,6 +58,7 @@ namespace ZeroStack.IdentityServer.API
 
             services.AddIdentityServer().AddAspNetIdentity<ApplicationUser>()
               .AddDeveloperSigningCredential()
+              //.AddSigningCredential(Certificates.Certificate.Get())
               .AddConfigurationStore(options =>
               {
                   options.ConfigureDbContext = builder => builder.UseMySql(Configuration.GetConnectionString("Default"), serverVersion, sqlOptions =>
